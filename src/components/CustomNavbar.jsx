@@ -15,8 +15,13 @@ import {
   NavbarText,
 } from "reactstrap";
 import { doLogout, getCurrentUserDetails, isLoggedIn } from "../auth";
+import { useContext } from "react";
+import userContext from "../context/userContext";
 
 const CustomNavbar = (args) => {
+
+  const userContextData = useContext(userContext)
+
   let navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,6 +37,10 @@ const CustomNavbar = (args) => {
     doLogout(() => {
       // logged out
       setLogin(false);
+      userContextData.setUser({
+        data:null,
+        login:false
+      })
       navigate("/");
     });
   };

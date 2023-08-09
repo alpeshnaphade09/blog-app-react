@@ -17,8 +17,12 @@ import { toast } from "react-toastify";
 import { loginUser } from "../services/user-service";
 import { doLogin } from "../auth";
 import { useNavigate } from "react-router-dom";
+import userContext from "../context/userContext";
+import { useContext } from "react";
 
 const Login = () => {
+
+  const userContextData = useContext(userContext)
 
   const navigate = useNavigate();
 
@@ -61,6 +65,10 @@ const Login = () => {
         //save the sata to local storage
         doLogin(data, ()=>{
             console.log("login details is save to localstorage");
+            userContextData.setUser({
+              data:data.user,
+              login:true
+            })
             navigate("/user/dashboard")
         })
 
