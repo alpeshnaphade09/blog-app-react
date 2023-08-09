@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import Post from "./Post";
 import { toast } from "react-toastify";
+import { deleteThePost } from "../services/post-service";
 
 const NewFeed = () => {
   const [postContent, setPostContent] = useState({
@@ -53,6 +54,23 @@ const NewFeed = () => {
       });
   };
 
+
+  // function to delete post 
+  function deletePost(post){
+    // going to delete post
+    deleteThePost(post.id).then(res => {
+      console.log(res);
+      toast.success("post deleted successfully")
+
+      let newPostContents = postContent.content.filter(p => p.postId != post.postId)
+      setPostContent({...postContent, content:newPostContents})
+    })
+    .catch(error=>{
+      console.log(error)
+      toast.error("error in deleting post")
+    })
+  }
+
   return (
     <div className="container-fluid">
       <Row>
@@ -64,7 +82,7 @@ const NewFeed = () => {
           <h1>Blogs Count {postContent?.totalElements}</h1>
 
           {postContent.content.map((post) => (
-            <Post post={post} key={post.id} />
+            <Post deletePost={deletePost} post={post} key={post.id} />
           ))}
 
           <Container className="mt-3">

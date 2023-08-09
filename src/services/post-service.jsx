@@ -42,3 +42,11 @@ export const uploadPostImage = (image, postId) => {
 export function loadPostCategorWise(categoryId){
   return privateAxios.get(`/post/category/${categoryId}`).then(res => res.data)
 }
+
+export function loadPostUserWise(userId) {
+  return privateAxios.get(`/post/user/${userId}`).then(res => res.data)
+}
+
+export function deleteThePost(postId){
+  return privateAxios.delete(`/post/${postId}`).then(res => res.data)
+}

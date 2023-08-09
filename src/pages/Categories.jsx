@@ -3,7 +3,7 @@ import Base from '../components/Base'
 import { useParams } from 'react-router'
 import { Col, Container, Row } from "reactstrap";
 import CategorySideMenu from '../components/CategorySideMenu';
-import { loadPostCategorWise } from '../services/post-service';
+import { loadPostCategorWise, deleteThePost } from '../services/post-service';
 import { toast } from 'react-toastify';
 import Post from '../components/Post';
 
@@ -21,6 +21,24 @@ function Categories() {
         })
     }, [categoryId])
 
+
+
+    function deletePost(post){
+      // going to delete post
+      deleteThePost(post.id).then(res => {
+        console.log(res);
+        toast.success("post deleted successfully")
+        let newPosts = posts.filter(p=> p.postId != post.postId)
+        setPosts([...newPosts])
+      })
+      .catch(error=>{
+        console.log(error)
+        toast.error("error in deleting post")
+      })
+    }
+
+
+
   return (
     <Base>
         <Container className="mt-3">
@@ -33,7 +51,7 @@ function Categories() {
             {
                 posts && posts.map((post, index) => {
                     return (
-                        <Post key={index} post={post}/>
+                        <Post deletePost={deletePost} key={index} post={post}/>
                     )
                 })
             }
